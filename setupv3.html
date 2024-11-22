@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Management System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f6fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        scroll-behavior: smooth;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 140px auto 50px;
+        padding: 20px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      h1, h2 {
+        padding-top: 10px;
+        padding-bottom: 5px;
+        text-align: center;
+        color: #0071b7;
+        font-weight: bold;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      input[type="text"] {
+        width: 97.3%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #0071b7;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #005a94;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      ul li {
+        background: #f1f1f1;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      ul li button {
+        background: #ff6b6b;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      ul li button:hover {
+        background: #d94545;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        color: white;
+      }
+
+      .header img {
+        width: 200px;
+        margin-right: 20px;
+      }
+      
+      .header h1 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 27px;
+        color: #00609c;
+        text-align: left;
+        margin-bottom: 0px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        width: 70%;
+        margin-bottom: 20px;
+        margin-left: 95px;
+      }
+
+      .tab-list {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+        margin-right: 65px;
+        padding-left: 50px;
+        gap: 20px;
+        padding-top: 0px;
+      }
+
+      .tab {
+        padding-top: 15px;
+        margin-left: 0px;
+        padding-bottom: 12px;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: #00609c;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border: 2px solid transparent;
+        border-radius: 5px;
+        text-decoration: none; /* Removes underline from anchor links */
+        transition: background-color 0.3s, border-color 0.3s;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .tab:hover {
+  background-color: #00609c; /* Slightly darker shade of blue */
+  color: #ffffff; /* White text on hover */
+  border-color: #00609c; /* Add a border color for hover effect */
+  transform: scale(1.05); /* Slightly enlarge the tab */
+  transition: background-color 0.3s, color 0.3s, transform 0.3s, border-color 0.3s;
+}
+
+
+      .container {
+        max-width: 800px;
+        margin: 180px auto 50px; /* Add margin to account for fixed header */
+        padding: 20px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <img class="logo" src="./img.svg" alt="Logo" />
+      <h1>Energy Management Assessment Setup</h1>
+      <div class="tab-list">
+        <a href="#facilitators" class="tab">Facilitators</a>
+        <a href="#ema-scores" class="tab">EMA Scores</a>
+        <a href="#questions" class="tab">Questions</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Facilitators Section -->
+      <h2 id="facilitators">Facilitators</h2>
+      <label for="facilitator-name">Add Facilitator:</label>
+      <input type="text" id="facilitator-name" placeholder="Enter facilitator name" />
+      <button id="add-facilitator-btn">Add Facilitator</button>
+      <ul id="facilitators-list"></ul>
+
+      <hr style="border: 1px solid #0071b7; margin: 20px 0;">
+
+      <!-- EMA Scores Section -->
+      <h2 id="ema-scores">EMA Scores</h2>
+      <label for="facility-id">Facility Type:</label>
+      <select id="facility-id">
+        <option value="11 - Agriculture, forestry, fishing and hunting">11 - Agriculture, forestry, fishing and hunting</option>
+        <option value="21 - Mining, quarrying, and oil and gas extraction">21 - Mining, quarrying, and oil and gas extraction</option>
+        <option value="22 - Utilities">22 - Utilities</option>
+        <option value="23 - Construction">23 - Construction</option>
+        <option value="31-32-33 - Manufacturing">31-32-33 - Manufacturing</option>
+        <option value="48 - Transportation">48 - Transportation</option>
+        <option value="56 - Administrative and support, waste management and remediation services">56 - Administrative and support, waste management and remediation services</option>
+      </select>
+        <label for="ema-category">Category:</label>
+        <select id="ema-category">
+            <option value="Management Commitment">Management Commitment</option>
+            <option value="Resources">Resources</option>
+            <option value="Energy Review, Analysis, and Targets">
+              Energy Review, Analysis, and Targets
+            </option>
+            <option value="Monitoring">Monitoring</option>
+            <option value="Action plans, Reporting, Review and Reassessment">
+              Action plans, Reporting, Review and Reassessment
+            </option>
+            <option value="Operations and Maintenance">Operations and Maintenance</option>
+            <option value="Employee Engagement">Employee Engagement</option>
+            <option value="Procurement and Design">Procurement and Design</option>
+            <option value="Documentation and Records">Documentation and Records</option>
+            <option value="Energy Management System Audits">Energy Management System Audits</option>
+          </select>
+      <label for="ema-score">Score:</label>
+      <input type="text" id="ema-score" placeholder="Enter score" />
+      <button id="add-ema-score-btn">Add EMA Score</button>
+      <ul id="ema-scores-list"></ul>
+      <hr style="border: 1px solid #0071b7; margin: 20px 0;">
+
+      <!-- Questions Section -->
+      <h2 id="questions">Questions</h2>
+      <label for="question-category">Category:</label>
+      <select id="question-category">
+        <option value="Management Commitment">Management Commitment</option>
+        <option value="Resources">Resources</option>
+        <option value="Energy Review, Analysis, and Targets">
+          Energy Review, Analysis, and Targets
+        </option>
+        <option value="Monitoring">Monitoring</option>
+        <option value="Action plans, Reporting, Review and Reassessment">
+          Action plans, Reporting, Review and Reassessment
+        </option>
+        <option value="Operations and Maintenance">Operations and Maintenance</option>
+        <option value="Employee Engagement">Employee Engagement</option>
+        <option value="Procurement and Design">Procurement and Design</option>
+        <option value="Documentation and Records">Documentation and Records</option>
+        <option value="Energy Management System Audits">Energy Management System Audits</option>
+      </select>
+      <label for="new-question">Question:</label>
+      <input type="text" id="new-question" placeholder="Enter question" />
+      <label for="question-priority">Priority:</label>
+      <input type="text" id="question-priority" placeholder="Enter priority" />
+      <label for="question-recommendation">Recommendation:</label>
+      <input
+        type="text"
+        id="question-recommendation"
+        placeholder="Enter recommendation"
+      />
+      <button id="add-question-btn">Add Question</button>
+      <ul id="questions-list"></ul>
+    </div>
+
+    <script>
+      const API_BASE_URL = "http://localhost:3000";
+
+      // Common Functions for Fetch and Render
+      async function fetchAndRender(endpoint, listElement, renderFn) {
+        const response = await fetch(`${API_BASE_URL}/${endpoint}`);
+        const data = await response.json();
+        listElement.innerHTML = "";
+        data.forEach(renderFn);
+      }
+
+      document.querySelectorAll('.tab').forEach((tab) => {
+  tab.addEventListener('click', function (e) {
+    e.preventDefault(); // Prevent default anchor behavior
+    const targetId = this.getAttribute('href').slice(1); // Remove '#' from href
+    const targetElement = document.getElementById(targetId);
+
+    // Adjust scroll position with offset for the fixed header
+    const headerOffset = 135; // Adjust this based on your header height
+    const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth', // Smooth scrolling
+    });
+  });
+});
+
+      // Facilitators
+      const facilitatorsList = document.getElementById("facilitators-list");
+      document
+        .getElementById("add-facilitator-btn")
+        .addEventListener("click", async () => {
+          const name = document.getElementById("facilitator-name").value.trim();
+          if (name) {
+            await fetch(`${API_BASE_URL}/facilitators`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name }),
+            });
+            document.getElementById("facilitator-name").value = "";
+            fetchAndRender("facilitators", facilitatorsList, renderFacilitator);
+          }
+        });
+
+      function renderFacilitator(facilitator) {
+        const li = document.createElement("li");
+        li.textContent = facilitator.name;
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+        removeBtn.onclick = async () => {
+          await fetch(`${API_BASE_URL}/facilitators/${facilitator._id}`, {
+            method: "DELETE",
+          });
+          fetchAndRender("facilitators", facilitatorsList, renderFacilitator);
+        };
+        li.appendChild(removeBtn);
+        facilitatorsList.appendChild(li);
+      }
+
+      // EMA Scores
+      const emaScoresList = document.getElementById("ema-scores-list");
+      document
+        .getElementById("add-ema-score-btn")
+        .addEventListener("click", async () => {
+          const facilityId = document.getElementById("facility-id").value
+          const category = document.getElementById("ema-category").value.trim();
+          const score = document.getElementById("ema-score").value.trim();
+          if (facilityId && category && score) {
+            await fetch(`${API_BASE_URL}/ema-scores`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ facilityId, category, score }),
+            });
+            document.getElementById("facility-id").value = "";
+            document.getElementById("ema-category").value = "";
+            document.getElementById("ema-score").value = "";
+            fetchAndRender("ema-scores", emaScoresList, renderEMAScore);
+          }
+        });
+
+      function renderEMAScore(score) {
+        const li = document.createElement("li");
+        li.textContent = `Facility: ${score.facilityId}\nCategory: ${score.category}\nScore: ${score.score}`;
+        li.style.whiteSpace = "pre-line";
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+        removeBtn.onclick = async () => {
+          await fetch(`${API_BASE_URL}/ema-scores/${score._id}`, {
+            method: "DELETE",
+          });
+          fetchAndRender("ema-scores", emaScoresList, renderEMAScore);
+        };
+        li.appendChild(removeBtn);
+        emaScoresList.appendChild(li);
+      }
+
+      // Questions
+      const questionsList = document.getElementById("questions-list");
+      document
+        .getElementById("add-question-btn")
+        .addEventListener("click", async () => {
+          const category = document
+            .getElementById("question-category")
+            .value.trim();
+          const question = document.getElementById("new-question").value.trim();
+          const priority = document
+            .getElementById("question-priority")
+            .value.trim();
+          const recommendation = document
+            .getElementById("question-recommendation")
+            .value.trim();
+          if (category && question && priority && recommendation) {
+            await fetch(`${API_BASE_URL}/questions`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ category, question, priority, recommendation }),
+            });
+            document.getElementById("question-category").value = "";
+            document.getElementById("new-question").value = "";
+            document.getElementById("question-priority").value = "";
+            document.getElementById("question-recommendation").value = "";
+            fetchAndRender("questions", questionsList, renderQuestion);
+          }
+        });
+
+      function renderQuestion(question) {
+        const li = document.createElement("li");
+        li.dataset.id = question._id;
+        li.textContent = `Category: ${question.category}\n\nQuestion: ${question.question}\n\nPriority: ${question.priority}\n\nRecommendation: ${question.recommendation}`;
+        li.style.whiteSpace = "pre-line";
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+        removeBtn.onclick = async () => {
+          await fetch(`${API_BASE_URL}/questions/${question._id}`, {
+            method: "DELETE",
+          });
+          fetchAndRender("questions", questionsList, renderQuestion);
+        };
+        li.appendChild(removeBtn);
+        questionsList.appendChild(li);
+      }
+
+      let autoScrollInterval;
+
+function enableAutoScrollOnDrag(container) {
+  // Listen for drag events on the container
+  container.addEventListener('dragover', (event) => {
+    const { clientY } = event;
+
+    // Get the viewport dimensions
+    const viewportHeight = window.innerHeight;
+
+    // Start scrolling up if dragging near the top of the viewport
+    if (clientY < 100) {
+      startAutoScroll(-10); // Scroll up
+    }
+    // Start scrolling down if dragging near the bottom of the viewport
+    else if (clientY > viewportHeight - 100) {
+      startAutoScroll(10); // Scroll down
+    } else {
+      stopAutoScroll(); // Stop scrolling if not near the edges
+    }
+  });
+
+  // Stop scrolling when drag ends
+  container.addEventListener('dragend', () => stopAutoScroll());
+}
+
+function startAutoScroll(speed) {
+  if (autoScrollInterval) return; // Prevent multiple intervals
+  autoScrollInterval = setInterval(() => {
+    window.scrollBy(0, speed);
+  }, 20); // Adjust scrolling speed
+}
+
+function stopAutoScroll() {
+  clearInterval(autoScrollInterval);
+  autoScrollInterval = null;
+}
+
+// Enable auto-scroll on the body during drag-and-drop
+enableAutoScrollOnDrag(document.body);
+
+// Initialize Sortable.js with updated settings
+new Sortable(questionsList, {
+  onEnd: async () => {
+    stopAutoScroll(); // Ensure auto-scroll stops when dragging ends
+
+    const newOrder = Array.from(questionsList.children).map((li, index) => ({
+      id: li.dataset.id,
+      order: index + 1,
+    }));
+    await fetch(`${API_BASE_URL}/questions/reorder`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ updates: newOrder }),
+    });
+    fetchAndRender("questions", questionsList, renderQuestion);
+  },
+});
+
+
+      // Initialize All Sections
+      window.onload = () => {
+        fetchAndRender("facilitators", facilitatorsList, renderFacilitator);
+        fetchAndRender("ema-scores", emaScoresList, renderEMAScore);
+        fetchAndRender("questions", questionsList, renderQuestion);
+      };
+    </script>
+  </body>
+</html>
